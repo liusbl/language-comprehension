@@ -1,5 +1,6 @@
 import java.io.File
 import java.util.*
+import kotlin.math.round
 
 /**
  * English (all words):
@@ -48,11 +49,12 @@ fun main() {
         println(
             "Analysed word count: ${fullList.size}/${wordList.size}, " +
                     "${(fullList.size) / wordList.size.toFloat()}%. " +
-                    "Average comprehension percent: ${fullList.map { it.comprehension.percent }.average()}"
+                    "Average comprehension: ${(fullList.map { it.comprehension.percent }.average()).roundTo()}%"
         )
         val comprehensionText = Comprehension.entries.joinToString(separator = ", ") { comprehension ->
+            val comprehensionListSize = fullList.filter { it.comprehension == comprehension }.size
             "${comprehension.text}: ${comprehension.shortcut} " +
-                    "(${fullList.filter { it.comprehension == comprehension }.size})"
+                    "($comprehensionListSize, ${(comprehensionListSize.toFloat() / fullList.size * 100).roundTo()}%)"
         }
         println(comprehensionText)
         println("NEXT WORD: $word")
@@ -96,4 +98,17 @@ fun Comprehension(percent: Int): Comprehension? = Comprehension.entries.find { i
 
 fun Comprehension(shortcut: Char): Comprehension? = Comprehension.entries.find {
     it.shortcut.equals(shortcut, ignoreCase = true)
+}
+
+
+fun Double.roundTo(precision: Int = 2): Double {
+    var multiplier = 1.0
+    repeat(precision) { multiplier *= 10 }
+    return round(this * multiplier) / multiplier
+}
+
+fun Float.roundTo(precision: Int = 2): Float {
+    var multiplier = 1f
+    repeat(precision) { multiplier *= 10 }
+    return round(this * multiplier) / multiplier
 }
