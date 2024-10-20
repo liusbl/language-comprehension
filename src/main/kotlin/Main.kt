@@ -23,18 +23,20 @@ fun main() {
         .shuffled()
 
     println("Hello!")
-    val comprehensionText = Comprehension.entries.joinToString(separator = ", ") { comprehension ->
-        "${comprehension.text}: ${comprehension.shortcut}"
-    }
-    var currentSessionWords = 0
+    val currentSessionWordResultList = mutableListOf<WordResult>()
     shuffledWordList.take(1000).forEach { word ->
         println("----------------------------")
         println(
-            "Analysed word count: ${wordResultList.size + currentSessionWords}/${wordList.size}, " +
-                    "${(wordResultList.size + currentSessionWords) / wordList.size.toFloat()}%"
+            "Analysed word count: ${wordResultList.size + currentSessionWordResultList.size}/${wordList.size}, " +
+                    "${(wordResultList.size + currentSessionWordResultList.size) / wordList.size.toFloat()}%. "
         )
-        println("Next word: $word")
+        val comprehensionText = Comprehension.entries.joinToString(separator = ", ") { comprehension ->
+            "${comprehension.text}: ${comprehension.shortcut} " +
+                    "(${currentSessionWordResultList.filter { it.comprehension == comprehension }.size + 
+                            wordResultList.filter { it.comprehension == comprehension }.size})"
+        }
         println(comprehensionText)
+        println("NEXT WORD: $word")
         val input = readln()
         val comprehension = Comprehension(input[0])
 
@@ -44,7 +46,7 @@ fun main() {
             return
         } else {
             resultFile.appendText("$word;${comprehension.percent}\n")
-            currentSessionWords++
+            currentSessionWordResultList += WordResult(word, comprehension)
         }
     }
 }
