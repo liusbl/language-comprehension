@@ -1,4 +1,5 @@
 import java.io.File
+import java.util.*
 
 /**
  * Lithuanian:
@@ -12,17 +13,30 @@ import java.io.File
  * Source: https://github.com/dwyl/english-words?tab=readme-ov-file
  * [USING THIS] Sum (without caps words or non-letters): 341122
  */
+
+private const val ENGLISH_ALL_WORD_FILE_NAME = "english-words-all"
+private const val ENGLISH_12DICT_WORD_FILE_NAME = "english-words-12dict" // TODO
+private const val LITHUANIAN_WORD_FILE_NAME = "lithuanian-words"
+
 fun main() {
-    val resultFile = File("english-words-all-results.txt")
+    println("Hello! Choose language to check.")
+    println("E: English. L: Lithuanian")
+    val language = readln().lowercase(Locale.getDefault())
+    val fileName = when (language[0]) {
+        'e' -> ENGLISH_ALL_WORD_FILE_NAME
+        'l' -> LITHUANIAN_WORD_FILE_NAME
+        else -> throw Exception("Unexpected language: $language")
+    }
+
+    val resultFile = File("$fileName-results.txt")
     if (!resultFile.exists()) {
         resultFile.createNewFile()
     }
     val wordResultList = resultFile.readLines().map(::WordResult)
-    val wordList = File("english-words-all.txt").readLines()
+    val wordList = File("$fileName.txt").readLines()
     val shuffledWordList = wordList.filter { word -> !wordResultList.map { it.word }.contains(word) }
         .shuffled()
 
-    println("Hello!")
     val currentSessionWordResultList = mutableListOf<WordResult>()
     shuffledWordList.take(1000).forEach { word ->
         println("----------------------------")
