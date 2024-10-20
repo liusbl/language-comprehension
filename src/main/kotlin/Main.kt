@@ -2,16 +2,20 @@ import java.io.File
 import java.util.*
 
 /**
+ * English (all words):
+ * Source: https://github.com/dwyl/english-words?tab=readme-ov-file
+ * [USING THIS] Sum (without caps words or non-letters): 341122
+ *
+ * English (12 dict):
+ * Source: http://wordlist.aspell.net/12dicts/. 12dicts-6.0.2.zip (ver 6.0.2)
+ * README: http://wordlist.aspell.net/12dicts-readme/
+ *
  * Lithuanian:
  * Source: https://ekalba.lt/bendrines-lietuviu-kalbos-zodynas
  * Total sum (including first caps words): 71449
  * Without first caps words: 68485
  * Without duplicates: 67163
  * [USING THIS] Without hyphens: 67091
- *
- * English:
- * Source: https://github.com/dwyl/english-words?tab=readme-ov-file
- * [USING THIS] Sum (without caps words or non-letters): 341122
  */
 
 private const val ENGLISH_ALL_WORD_FILE_NAME = "english-words-all"
@@ -20,7 +24,7 @@ private const val LITHUANIAN_WORD_FILE_NAME = "lithuanian-words"
 
 fun main() {
     println("Hello! Choose language to check.")
-    println("E: English. L: Lithuanian")
+    println("English (341k): E. Lithuanian (67k): L.")
     val language = readln().lowercase(Locale.getDefault())
     val fileName = when (language[0]) {
         'e' -> ENGLISH_ALL_WORD_FILE_NAME
