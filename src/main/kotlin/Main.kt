@@ -26,14 +26,15 @@ fun main() {
     val currentSessionWordResultList = mutableListOf<WordResult>()
     shuffledWordList.take(1000).forEach { word ->
         println("----------------------------")
+        val fullList = wordResultList + currentSessionWordResultList
         println(
-            "Analysed word count: ${wordResultList.size + currentSessionWordResultList.size}/${wordList.size}, " +
-                    "${(wordResultList.size + currentSessionWordResultList.size) / wordList.size.toFloat()}%. "
+            "Analysed word count: ${fullList.size}/${wordList.size}, " +
+                    "${(fullList.size) / wordList.size.toFloat()}%. " +
+                    "Average comprehension percent: ${fullList.map { it.comprehension.percent }.average()}"
         )
         val comprehensionText = Comprehension.entries.joinToString(separator = ", ") { comprehension ->
             "${comprehension.text}: ${comprehension.shortcut} " +
-                    "(${currentSessionWordResultList.filter { it.comprehension == comprehension }.size + 
-                            wordResultList.filter { it.comprehension == comprehension }.size})"
+                    "(${fullList.filter { it.comprehension == comprehension }.size})"
         }
         println(comprehensionText)
         println("NEXT WORD: $word")
